@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project Management</title>
+        <style>
+            h1 {
+                /*6pt = 8px*/
+                font-size: 8px;
+            }
+            div {
+                background-color: yellow;
+                width: 250px;
+                height: 320px;
+            }
+            span {
+                margin: 10px;
+                font-size: 6px;
+                color: red;
+                font-weight: 500;
+            }
+            #b1 {
+                color: white;
+                background-color:  green;
+                border: none;
+                font-size: 6px;
+                font-weight: 500;
+                border-radius: 2px;
+                padding: 3px;
+            }
+            #b2 {
+                color: white;
+                font-weight: 500;
+                background-color: dodgerblue;
+                border: none;
+                font-size: 6px;
+                border-radius: 2px;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+    <center><h1><U>Project Management</u></h1>
+        <div>
+            <form>
+                <br>
+                <span>Project Name</span> <input type="text"><br><br>
+                <span>Assigned to</span> <input type="text"><br><br>
+                <span>Start Date</span> <input type="date"><span></span><span></span><span></span> <br><br>
+                <span>End Date</span> <input type="date"></span><span></span><span></span><span></span><br><br>
+                <span>Priority</span> <input type="radio" name="rb"><span>High</span>
+                                  <input type="radio" name="rb"><span>Average</span>
+                                  <input type="radio" name="rb"><span>Low</span><br><br>
+                <span id="d">Description</span> <textarea></textarea><br><br>
+                <button id="b1" type="submit">Submit</button>
+                <button id="b2" type="reset">Clear</button>
+            </form>
+        </div>
+            </center>
+    </body>
+</html>
