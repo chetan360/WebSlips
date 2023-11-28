@@ -1,52 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
 <?php
-    
-    class Slip23Q1 {
-        public $MAX;
-        public $items;
-        public $top;
+session_start();//for handel the submissions use session
 
-        public function __construct() {
-            $this->MAX = 5;
-            $this->items = array();
-            $this->top = -1;
-        }
-        
-        public function push($n) {
-            if ($this->top == $this->MAX - 1) {
-                echo "Stack Overflow<br>";
-            } else {
-                $this->items[++$this->top] = $n;
-                echo "$n is pushed.<br>";
-            }
-        }
+if(!isset($_SESSION['stack'])) {
+    $_SESSION['stack'] = [];
+}
 
-        public function pop() {
-            if ($this->top == -1) {
-                echo "Stack Underflow<br>";
-            } else {
-                return $this->items[$this->top--];
-            }
-        }
+function push($item) {
+    array_push($_SESSION['stack'], $item);
+}
+
+function pop() {
+    if (empty($_SESSION['stack'])) {
+        echo "Stack is empty.";
+    } else {
+        return array_pop($_SESSION['stack']);
     }
+}
 
-    $stack = new Slip23Q1();
-    $n = 1;
-    
-    $stack->push("1");
-    $stack->push("2");
-    $stack->push("3");
-    $stack->push("4");
-    $stack->push("5");
-    $stack->push("6");
-    
-    echo"<br>Stack contents:<br>";
-    print_r($stack->items);
-    
-    echo"<br><br>";
-    echo $stack->pop()." is popped.<br>";
-    echo $stack->pop()." is popped.<br>";
-    echo $stack->pop()." is popped.<br>";
-    echo $stack->pop()." is popped.<br>";
-    echo $stack->pop()." is popped.<br>";
-    echo $stack->pop()."<br>";
+function displayStack() {
+    if (empty($_SESSION['stack'])) {
+        echo "Stack is empty.";
+    } else {
+        echo "Stack: " . implode(' ', $_SESSION['stack']);
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $option = $_POST['option'];
+
+    switch ($option) {
+        case 'push':
+            $item = $_POST['item'];
+            push($item);
+            echo "$item is inserted.";
+            break;
+
+        case 'pop':
+            $poppedItem = pop();
+            if ($poppedItem !== null) {
+                echo "$poppedItem is deleted.";
+            }
+            break;
+
+        case 'display':
+            displayStack();
+            break;
+    }
+}
 ?>
+
+<form method="post">
+    <h2>Queue Program</h2>
+    <label for="option">Choose an operation:</label>
+    <select name="option" id="option">
+        <option value="push">Push</option>
+        <option value="pop">Pop</option>
+        <option value="display">Display Stack</option>
+    </select>
+
+    <div id="itemInput">
+        <label for="item">Enter item:</label>
+        <input type="text" name="item" id="item">
+    </div>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
