@@ -1,53 +1,72 @@
-<?php 
-    class Slip22Q1 {
-        public $MAX;
-        public $items;
-        public $fr, $rr;
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<?php
+session_start();//for handel the submissions use session
 
-        public function __construct() {
-            $this->MAX = 5;
-            $this->items = array();
-            $this->fr = -1;
-            $this->rr = -1;
-        }
-        
-        public function enqueue($n) {
-            if ($this->rr == $this->MAX - 1) {
-                echo "Queue is full.<br>";
-            } else {
-                $this->items[++$this->rr] = $n;
-                echo "$n is inserted at queue.<br>";
-            }
-        }
+if(!isset($_SESSION['queue'])) {
+    $_SESSION['queue'] = [];
+}
 
-        public function dqueue() {
-            if ($this->fr == $this->rr) {
-                echo "Queue is empty.<br>";
-            } else {
-                return $this->items[++$this->fr];
-            }
-        }
+function enqueue($item) {
+    array_push($_SESSION['queue'], $item);
+}
+
+function dequeue() {
+    if (empty($_SESSION['queue'])) {
+        echo "Queue is empty.";
+    } else {
+        return array_shift($_SESSION['queue']);
     }
+}
 
-    $queue = new Slip22Q1();
-    $n = 1;
-    
-    $queue->enqueue("1");
-    $queue->enqueue("2");
-    $queue->enqueue("3");
-    $queue->enqueue("4");
-    $queue->enqueue("5");
-    $queue->enqueue("6");
-    
-    echo"<br>Queue contents:<br>";
-    print_r($queue->items);
-    
-    echo"<br><br>";
-    echo $queue->dqueue()." is deleted from queue.<br>";
-    echo $queue->dqueue()." is deleted from queue.<br>";
-    echo $queue->dqueue()." is deleted from queue.<br>";
-    echo $queue->dqueue()." is deleted from queue.<br>";
-    echo $queue->dqueue()." is deleted from queue.<br>";
-    echo $queue->dqueue()."<br>";
-    
+function displayQueue() {
+    if (empty($_SESSION['queue'])) {
+        echo "Queue is empty.";
+    } else {
+        echo "Queue: " . implode(' ', $_SESSION['queue']);
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $option = $_POST['option'];
+
+    switch ($option) {
+        case 'enqueue':
+            $item = $_POST['item'];
+            enqueue($item);
+            echo "$item is inserted.";
+            break;
+
+        case 'dequeue':
+            $dequeuedItem = dequeue();
+            if ($dequeuedItem !== null) {
+                echo "$dequeuedItem is deleted.";
+            }
+            break;
+
+        case 'display':
+            displayQueue();
+            break;
+    }
+}
 ?>
+
+<form method="post">
+    <h2>Queue Program</h2>
+    <label for="option">Choose an operation:</label>
+    <select name="option" id="option">
+        <option value="enqueue">Enqueue</option>
+        <option value="dequeue">Dequeue</option>
+        <option value="display">Display Queue</option>
+    </select>
+
+    <div id="itemInput">
+        <label for="item">Enter item:</label>
+        <input type="text" name="item" id="item">
+    </div>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
